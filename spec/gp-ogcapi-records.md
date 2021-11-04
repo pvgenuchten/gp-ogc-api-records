@@ -61,9 +61,9 @@ This specification defines the following requirements classes:
 <sup>1 </sup>The INSPIRE-multilinguality requirements class is mandatory for all data sets that contain information in more than one natural language.
 
 Future versions of this specification may include further conformance classes, in particular for
-- DCAT
+- Geo-DCAT-ap
 - json-ld
-- quality of service
+- Quality of service
 
 The target of all requirements classes are “Web APIs”. Conformance with this specification shall be assessed using all the relevant conformance test cases specified in [Annex A (normative)](#ats) of this specification.
 
@@ -100,7 +100,7 @@ For the purposes of this document, the following terms and definitions apply:
 | --- | --- | --- |
 | content negotiation | The practice of providing multiple representations available via the same URI | [ISO/IEC 19788](https://www.iso.org/obp/ui/#iso:std:iso-iec:19788:-7:ed-1:v1:en:sec:3.20) |
 | data set | Identifiable collection of data. | [ISO 19115](https://www.iso.org/obp/ui/#iso:std:iso:19115:-2:ed-2:v1:en:sec:3.6) |
-| distribution (of a data set) | A specific representation of a data set. A data set might be available in multiple serializations that may differ in various ways, including natural language, media-type or format, schematic organization, temporal and spatial resolution, level of detail or profiles (which might specify any or all of the above). | [DCAT](https://www.w3.org/TR/vocab-dcat-2/#Class:Distribution) |
+| serialization (of a record) | A specific representation of a record. A record might be available in multiple serializations that may differ in various ways, including natural language, media-type or format, schematic organization, temporal and spatial resolution, level of detail or profiles (which might specify any or all of the above). | [DCAT](https://www.w3.org/TR/vocab-dcat-2/#Class:Distribution) |
 | encoding | Conversion of data into a series of codes. | [ISO 19118](https://www.iso.org/obp/ui/#iso:std:iso:19118:ed-2:v1:en:term:4.13) |
 | encoding rule | Identifiable collection of conversion rules that define the encoding for a particular data structure. | [ISO 19118](https://www.iso.org/obp/ui/#iso:std:iso:19118:ed-2:v1:en:term:4.14) |
 | feature | Abstraction of real world phenomena. **NOTE** The concept of a `feature` is synonymous to a `spatial object` in INSPIRE | [OGC API - Records - 1](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#_feature) |
@@ -133,9 +133,6 @@ For the purposes of this document, the following terms and definitions apply:
 This section describes the requirements a Web API shall fulfill in order to be compliant with both ‘OGC API – Records’ and INSPIRE requirements for Discovery services.
 
 ### 7.1. Main principles <a name="main-principles"></a>
-
-
-
 
 The mapping between INSPIRE resources and [ogcapirecords resources](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#table_1) is given below, for an example data set containing records <sup> [5](#footnote5)</sup>.
 
