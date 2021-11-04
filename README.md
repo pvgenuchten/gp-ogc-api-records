@@ -1,2 +1,11 @@
-# gp-ogc-api-records
-Good Practice: INSPIRE download services based on OGC API - Features This repository contains a specification for setting up INSPIRE download services based on the new OGC API - Features standard.  A specification document has been developed by experts from DK, FI and JRC. It was submitted for review and testing to experts in the INSPIRE maintenance and implementation expert group (MIG) as well as solution providers who were already providing implementations of the standard.  The specification has been endorsed as an INSPIRE good practice document.  An overview of known deployments can be found on the overview page of deployments.  Please provide feedback and any issues encountered through the issue tracker.
+# Good Practice: INSPIRE discovery services based on OGC API - Records
+
+This repository contains a specification for setting up INSPIRE discover services based on the [OGC API - Records standard](https://www.opengeospatial.org/standards/ogcapi-records) (currently in draft).
+
+A [specification document](/spec/gp-ogc-api-records.md) is under development by experts from NL, FI and JRC. It will be submitted for review and testing to experts in the INSPIRE maintenance and implementation expert group (MIG) as well as solution providers who were already providing implementations of the standard. 
+
+We hope the specification will be endorsed as an [INSPIRE good practice document](https://inspire.ec.europa.eu/portfolio/good-practice-library).
+
+An overview of known deployments can be found on the [overview page of deployments](./deployments).
+
+Please contribute or provide feedback through the issue tracker or via pull requests.
