@@ -1,4 +1,4 @@
-# Setting up an INSPIRE Discovery service based on the OGC API-Records standard
+# An INSPIRE Discovery service based on the OGC API-Records standard
 
 `Version: 0.1`
 `Date: 2021-11-11`
@@ -27,27 +27,23 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-This document proposes a technical approach for implementing the requirements set out in the INSPIRE Implementing Rules for Network Services \[[IRs for NS]\] based on the newly adopted [OGC API - Records standard](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html).
+This document proposes a technical approach for implementing the requirements set out in the INSPIRE Implementing Rules for Network Services \[[IRs for NS]\] based on the to be adopted [OGC API - Records standard](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html).
 
-Several possible solutions for implementing Discovery services are already endorsed by the INSPIRE Maintenance and Implementation (MIG) group. [Technical guidelines documents](https://inspire.ec.europa.eu/Technical-Guidelines2/Network-Services/41) are available that cover implementations based on ATOM, WFS 2.0, WCS and SOS.
+An alternative solution for implementing Discovery services is already endorsed by the INSPIRE Maintenance and Implementation (MIG) group. [Technical guidelines documents](https://inspire.ec.europa.eu/Technical-Guidelines2/Network-Services/41) are available that cover an implementation based on CSW.
 
-While all of these approaches use the Web for providing access to geospatial data, the new family of OGC API standards aim to be more developer friendly by requiring less up-front knowledge of the standard involved. The rapid emergence of Web APIs provide a flexible and easily understandable means for access to data, as recommended by the W3C Data on the Web Best Practices [DWBP Best Practice 23](https://www.w3.org/TR/dwbp/#accessAPIs) and [DWBP Best Practice 24](https://www.w3.org/TR/dwbp/#APIHttpVerbs).
+While this approaches uses the Web for providing access to geospatial data, the new family of OGC API standards aim to be more developer friendly by requiring less up-front knowledge of the standard involved. The rapid emergence of Web APIs provide a flexible and easily understandable means for access to data, as recommended by the W3C Data on the Web Best Practices [DWBP Best Practice 23](https://www.w3.org/TR/dwbp/#accessAPIs) and [DWBP Best Practice 24](https://www.w3.org/TR/dwbp/#APIHttpVerbs).
 
 Therefore, this document describes an additional option for the implementation of INSPIRE Discovery services.
 
-In order to facilitate the use of off-the-shelf software implementing the OGC API - Records standard (ogcapirecords) to meet the requirements in this document, INSPIRE-specific extensions are limited to the absolute minimum. Where several implementation options exist, this document describes the specific way of application of the ogcapirecords and associated standards to meet the requirements of the INSPIRE Implementing Rules for Discovery services.
+In order to facilitate the use of off-the-shelf software implementing the OGC API - Records standard to meet the requirements in this document, INSPIRE-specific extensions are limited to the absolute minimum. Where several implementation options exist, this document describes the specific way of application of the ogcapirecords and associated standards to meet the requirements of the INSPIRE Implementing Rules for Discovery services.
 
 ### OGC API - Records - a brief overview
 
 OGC API standards define modular API parts that spatially enable Web APIs in a consistent way. The [OpenAPI specification](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#OpenAPI) is used to define the API building blocks.
 
-OGC API - Records provides API building blocks to create, modify and query Records on the Web. OGC API - Records is comprised of multiple parts, each of them is a separate standard. The ["Core"](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html) part specifies the core capabilities and is restricted to retrieving Records where geometries are represented in the WGS 84 coordinate reference system with axis order longitude/latitude. Additional capabilities that address more advanced needs will be specified in additional parts. A [roadmap](https://www.opengeospatial.org/roadmap) is made available by the OGC.
-
-By default, every API implementing this standard will provide access to a single data set. Rather than sharing the data as a complete data set, the OGC API - Records standards offer direct, fine-grained access to the data at the feature (object) level. Query operations enable clients to retrieve Records from the underlying data store based upon simple selection criteria, defined by the client.
+OGC API - Records provides API building blocks to create, modify and query Records on the Web. OGC API - Records is comprised of multiple parts, each of them is a separate standard. The ["Core"](#) part specifies the core capabilities and is restricted to retrieving Records where geometries are represented in the WGS 84 coordinate reference system with axis order longitude/latitude. Additional capabilities that address more advanced needs will be specified in additional parts. A [roadmap](https://www.opengeospatial.org/roadmap) is made available by the OGC.
 
 For further details about the standard, see the official [OGC API - Records website](https://www.opengeospatial.org/standards/ogcapi-Records).
-
-For a description of the main differences between WFS 2.0 and OGC API - Records, see [this section in the Guide on OGC API - Records](https://github.com/opengeospatial/ogcapi-Records/blob/master/guide/section_8_WFS_2_0_v_3_0.adoc).
 
 ## 2. Scope <a name="scope"></a>
 
@@ -60,17 +56,14 @@ This specification defines the following requirements classes:
 - [INSPIRE-discovery-ogcapirecords (mandatory)](#req-discovery)
 - [INSPIRE-multilinguality (conditional)<sup> 1</sup>](#req-multilinguality)
 - [INSPIRE-ogcapirecords-GeoJSON (optional)](#req-ogcapirecords-json)
-
+- [INSPIRE-ogcapirecords-iso19139 (mandatory)](#req-ogcapirecords-iso19139)
 
 <sup>1 </sup>The INSPIRE-multilinguality requirements class is mandatory for all data sets that contain information in more than one natural language.
 
-The requirements classes and their dependencies are illustrated in the figure below.
-
-![Overview of dependencies](figures/dependencies.png)
-
 Future versions of this specification may include further conformance classes, in particular for
-- direct access Discovery, and
-- quality of service
+- Geo-DCAT-ap
+- json-ld
+- Quality of service
 
 The target of all requirements classes are “Web APIs”. Conformance with this specification shall be assessed using all the relevant conformance test cases specified in [Annex A (normative)](#ats) of this specification.
 
@@ -93,8 +86,7 @@ The target of all requirements classes are “Web APIs”. Conformance with this
 <!-- Second parts of the reference-style links, see also https://www.markdownguide.org/basic-syntax/#reference-style-links  -->
 [IRs for NS]: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009R0976-20141231&from=EN "Implementing Rules for Network Services (consolidated version of 31/12/2014)"
 [IRs for ISDSS]: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02010R1089-20141231&from=EN "Implementing Rules for interoperability of spatial data sets and services (consolidated version of 31/12/2014)"
-[OGC API - Records - 1]: http://docs.opengeospatial.org/is/17-069r3/17-069r3.html "OGC API - Records - Part 1: Core"
-[OGC API - Records - 2]: http://docs.opengeospatial.org/is/18-058/18-058.html "OGC API - Records - Part 2: Coordinate Reference Systems by Reference"
+[OGC API - Records - 1]:  "OGC API - Records - Part 1: Core"
 [OpenAPI 3.0]: http://spec.openapis.org/oas/v3.0.3 "OpenAPI Specification 3.0"
 [RFC 4647]: https://www.rfc-editor.org/rfc/rfc4647 "Matching of Language Tags"
 [RFC 5646]: https://www.rfc-editor.org/rfc/rfc5646 "Tags for Identifying Languages"
@@ -108,14 +100,13 @@ For the purposes of this document, the following terms and definitions apply:
 | --- | --- | --- |
 | content negotiation | The practice of providing multiple representations available via the same URI | [ISO/IEC 19788](https://www.iso.org/obp/ui/#iso:std:iso-iec:19788:-7:ed-1:v1:en:sec:3.20) |
 | data set | Identifiable collection of data. | [ISO 19115](https://www.iso.org/obp/ui/#iso:std:iso:19115:-2:ed-2:v1:en:sec:3.6) |
-| distribution (of a data set) | A specific representation of a data set. A data set might be available in multiple serializations that may differ in various ways, including natural language, media-type or format, schematic organization, temporal and spatial resolution, level of detail or profiles (which might specify any or all of the above). | [DCAT](https://www.w3.org/TR/vocab-dcat-2/#Class:Distribution) |
-| direct access Discovery service | Discovery Service which provides access to the Spatial Objects in Spatial Data Sets based upon a query | \[[IRs for NS]\] |
+| serialization (of a record) | A specific representation of a record. A record might be available in multiple serializations that may differ in various ways, including natural language, media-type or format, schematic organization, temporal and spatial resolution, level of detail or profiles (which might specify any or all of the above). | [DCAT](https://www.w3.org/TR/vocab-dcat-2/#Class:Distribution) |
 | encoding | Conversion of data into a series of codes. | [ISO 19118](https://www.iso.org/obp/ui/#iso:std:iso:19118:ed-2:v1:en:term:4.13) |
 | encoding rule | Identifiable collection of conversion rules that define the encoding for a particular data structure. | [ISO 19118](https://www.iso.org/obp/ui/#iso:std:iso:19118:ed-2:v1:en:term:4.14) |
 | feature | Abstraction of real world phenomena. **NOTE** The concept of a `feature` is synonymous to a `spatial object` in INSPIRE | [OGC API - Records - 1](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#_feature) |
 | feature collection | A set of Records from a data set. | [OGC API - Records - 1](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#_feature_collection) |
 | feature type | **NOTE** The concept of a `feature type` is synonymous to a `spatial object type` in INSPIRE | [INSPIRE](https://inspire.ec.europa.eu/glossary/SpatialObject) |
-| pre-defined data set Discovery service | Service that enables copies of spatial data sets, or parts of such sets, to be Discoveryed. | \[[IRs for NS]\] |
+| record | A document describing a (spatial) asset (dataset, service, sensor, map, application, ...) |  |
 | Web API | API using an architectural style that is founded on the technologies of the Web. | [DWBP](https://www.w3.org/TR/dwbp) |
 
 
@@ -129,6 +120,7 @@ For the purposes of this document, the following terms and definitions apply:
 | --- | --- |
 | API |    Application Programming Interface |
 | CRS | Coordinate Reference System |
+| CSW | Catalogue Service for the Web |
 | DCAT | Data Catalog Vocabulary |
 | GML | Geography Markup Language |
 | JSON | JavaScript Object Notation |
@@ -136,20 +128,13 @@ For the purposes of this document, the following terms and definitions apply:
 | URL |    Uniform Resource Locator |
 | WFS | Web Feature Service |
 
-## 7. INSPIRE Discovery Services based on ogcapirecords <a name="inspire-ogcapirecords"></a>
+## 7. INSPIRE Discovery Services based on ogcapi records <a name="inspire-ogcapirecords"></a>
 
 This section describes the requirements a Web API shall fulfill in order to be compliant with both ‘OGC API – Records’ and INSPIRE requirements for Discovery services.
 
 ### 7.1. Main principles <a name="main-principles"></a>
 
-- A Web API provides data from one data set. This means that one data publisher often will need to provide more than one Web API.<sup> [3](#footnote3)</sup>
-- The exact composition of a data set is determined by the data publisher. It may be that the data set contains all that publishers’ information on one INSPIRE theme, but other compositions are allowed.
-- A data set is structured into one or several feature collections. Аll feature collections available in one API (under the `/collections` path) are considered to be part of the data set provided by that Web API.
-- A feature collection contains Records of only one feature type.
-
-For example, two data sets (with their own metadata records), one on buildings and one on addresses will have two landing pages (https://developer.my-org.eu/apis/addresses/ and https://developer.my-org.eu/apis/buildings/) rather than one landing page for the Web API (https://developer.my-org.eu/apis/ogcapirecords/) and two feature collections, one for each data set (https://developer.my-org.eu/apis/ogcapirecords/collections/addresses and https://developer.my-org.eu/apis/ogcapirecords/collections/buildings).
-
-The mapping between INSPIRE resources and [ogcapirecords resources](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#table_1) is given below, for an example data set containing addresses <sup> [5](#footnote5)</sup>.
+The mapping between INSPIRE resources and [ogcapirecords resources](http://docs.opengeospatial.org/is/17-069r3/17-069r3.html#table_1) is given below, for an example data set containing records <sup> [5](#footnote5)</sup>.
 
 | INSPIRE resource | ogcapirecords resource | Sample path | Document reference |
 | ------------- | ------------- | ------------- |-------------: |
